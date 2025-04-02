@@ -21,7 +21,7 @@ A modern web application that detects face emotions, gender, and age using face-
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
+git clone <https://github.com/yogeshswami0/face_recognition.git>
 cd face-recognition-app
 ```
 
