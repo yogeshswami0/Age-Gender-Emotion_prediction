@@ -10,7 +10,13 @@ A web-based face recognition application that detects faces and analyzes emotion
 
 ## Setup Instructions
 
-1. First, download the required face-api.js models:
+1. Clone the repository:
+```bash
+git clone https://github.com/yogeshswami0/face_recognition.git
+cd face-recognition-app
+```
+
+2. Download the required face-api.js models:
    - Create a `models` directory in the `public` folder
    - Download the following model files and place them in the `models` directory:
      - `tiny_face_detector_model-weights_manifest.json`
@@ -24,7 +30,7 @@ A web-based face recognition application that detects faces and analyzes emotion
      - `age_gender_model-weights_manifest.json`
      - `age_gender_model-shard1`
 
-2. You can download these models from:
+   You can download these models from:
    - [face-api.js models](https://github.com/justadudewhohacks/face-api.js/tree/master/weights)
    - Or use this command to download them:
      ```bash
