@@ -2,6 +2,8 @@ const video = document.getElementById("video");
 const toggleButton = document.getElementById("toggleDetection");
 const loadingSpinner = document.getElementById("loading");
 const confidenceBar = document.getElementById("confidenceBar");
+const cameraPermission = document.getElementById("cameraPermission");
+const requestCameraButton = document.getElementById("requestCamera");
 const isScreenSmall = window.matchMedia("(max-width: 700px)");
 let predictedAges = [];
 let lastDetections = null;
@@ -10,22 +12,57 @@ let isDetecting = false;
 let detectionInterval = null;
 let lastResults = { age: null, gender: null, emotion: null };
 
+// Check camera permission status
+async function checkCameraPermission() {
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        stream.getTracks().forEach(track => track.stop());
+        return true;
+    } catch (err) {
+        console.error("Camera permission denied:", err);
+        cameraPermission.style.display = "block";
+        return false;
+    }
+}
+
+// Request camera access
+requestCameraButton.addEventListener('click', async () => {
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        cameraPermission.style.display = "none";
+        video.srcObject = stream;
+        await video.play();
+    } catch (err) {
+        console.error("Error accessing camera:", err);
+        alert("Please allow camera access to use face detection");
+    }
+});
+
 // Load models when page loads
-window.addEventListener('load', () => {
+window.addEventListener('load', async () => {
     loadingSpinner.classList.remove('d-none');
-    Promise.all([
-        faceapi.nets.tinyFaceDetector.loadFromUri("/models"),
-        faceapi.nets.faceLandmark68Net.loadFromUri("/models"),
-        faceapi.nets.faceRecognitionNet.loadFromUri("/models"),
-        faceapi.nets.faceExpressionNet.loadFromUri("/models"),
-        faceapi.nets.ageGenderNet.loadFromUri("/models")
-    ]).then(() => {
+    try {
+        // Load all models from GitHub raw content
+        const modelBaseUrl = 'https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights/';
+        
+        await Promise.all([
+            faceapi.nets.tinyFaceDetector.loadFromUri(modelBaseUrl),
+            faceapi.nets.faceLandmark68Net.loadFromUri(modelBaseUrl),
+            faceapi.nets.faceRecognitionNet.loadFromUri(modelBaseUrl),
+            faceapi.nets.faceExpressionNet.loadFromUri(modelBaseUrl),
+            faceapi.nets.ageGenderNet.loadFromUri(modelBaseUrl)
+        ]);
+        
         loadingSpinner.classList.add('d-none');
-        startVideo();
-    }).catch(err => {
+        const hasPermission = await checkCameraPermission();
+        if (hasPermission) {
+            startVideo();
+        }
+    } catch (err) {
         console.error("Error loading models:", err);
         loadingSpinner.classList.add('d-none');
-    });
+        alert("Error loading face detection models. Please check your internet connection and try refreshing the page. If the problem persists, please try using a different browser.");
+    }
 });
 
 function startVideo() {
@@ -41,7 +78,10 @@ function startVideo() {
         video.srcObject = stream;
         return video.play();
     })
-    .catch(err => console.error("Error accessing camera:", err));
+    .catch(err => {
+        console.error("Error accessing camera:", err);
+        cameraPermission.style.display = "block";
+    });
 }
 
 function screenResize(isScreenSmall) {

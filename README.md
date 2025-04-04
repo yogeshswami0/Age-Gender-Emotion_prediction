@@ -1,41 +1,81 @@
 # Face Recognition App
 
-A modern web application that detects face emotions, gender, and age using face-api.js and Node.js.
-
-## Features
-
-- Real-time face detection
-- Emotion recognition
-- Gender detection
-- Age estimation
-- Modern responsive UI
-- RESTful API backend
+A web-based face recognition application that detects faces and analyzes emotions, age, and gender.
 
 ## Prerequisites
 
 - Node.js (v14 or higher)
-- npm (Node Package Manager)
-- Modern web browser with camera access
+- A modern web browser (Chrome, Firefox, or Edge recommended)
+- Webcam access
 
-## Installation
+## Setup Instructions
 
-1. Clone the repository:
-```bash
-git clone <repository-url>
-cd face-recognition-app
-```
+1. First, download the required face-api.js models:
+   - Create a `models` directory in the `public` folder
+   - Download the following model files and place them in the `models` directory:
+     - `tiny_face_detector_model-weights_manifest.json`
+     - `tiny_face_detector_model-shard1`
+     - `face_landmark_68_model-weights_manifest.json`
+     - `face_landmark_68_model-shard1`
+     - `face_recognition_model-weights_manifest.json`
+     - `face_recognition_model-shard1`
+     - `face_expression_model-weights_manifest.json`
+     - `face_expression_model-shard1`
+     - `age_gender_model-weights_manifest.json`
+     - `age_gender_model-shard1`
 
-2. Install dependencies:
-```bash
-npm install
-```
+2. You can download these models from:
+   - [face-api.js models](https://github.com/justadudewhohacks/face-api.js/tree/master/weights)
+   - Or use this command to download them:
+     ```bash
+     mkdir -p public/models
+     cd public/models
+     curl -O https://github.com/justadudewhohacks/face-api.js/raw/master/weights/tiny_face_detector_model-weights_manifest.json
+     curl -O https://github.com/justadudewhohacks/face-api.js/raw/master/weights/tiny_face_detector_model-shard1
+     curl -O https://github.com/justadudewhohacks/face-api.js/raw/master/weights/face_landmark_68_model-weights_manifest.json
+     curl -O https://github.com/justadudewhohacks/face-api.js/raw/master/weights/face_landmark_68_model-shard1
+     curl -O https://github.com/justadudewhohacks/face-api.js/raw/master/weights/face_recognition_model-weights_manifest.json
+     curl -O https://github.com/justadudewhohacks/face-api.js/raw/master/weights/face_recognition_model-shard1
+     curl -O https://github.com/justadudewhohacks/face-api.js/raw/master/weights/face_expression_model-weights_manifest.json
+     curl -O https://github.com/justadudewhohacks/face-api.js/raw/master/weights/face_expression_model-shard1
+     curl -O https://github.com/justadudewhohacks/face-api.js/raw/master/weights/age_gender_model-weights_manifest.json
+     curl -O https://github.com/justadudewhohacks/face-api.js/raw/master/weights/age_gender_model-shard1
+     ```
 
-3. Start the development server:
-```bash
-npm run dev
-```
+3. Start a local web server:
+   ```bash
+   # Using Python
+   python -m http.server 8000
 
-4. Open your browser and navigate to `http://localhost:3000`
+   # Or using Node.js
+   npx http-server
+   ```
+
+4. Open your browser and navigate to:
+   ```
+   http://localhost:8000
+   ```
+
+5. Allow camera access when prompted by your browser.
+
+## Troubleshooting
+
+If the camera doesn't open:
+1. Make sure you're running the application through a web server (not opening the HTML file directly)
+2. Check if the models directory exists and contains all required files
+3. Ensure your browser has permission to access the camera
+4. Try using a different browser
+5. Check if your webcam is working in other applications
+
+## Features
+
+- Real-time face detection
+- Emotion analysis
+- Age estimation
+- Gender detection
+- Confidence meter
+- Responsive design
+- Modern UI with animations
 
 ## Project Structure
 

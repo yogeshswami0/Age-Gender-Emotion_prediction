@@ -11,15 +11,13 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Routes
+// Serve the main page
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // API endpoint for face detection results
 app.post('/api/detect', (req, res) => {
-    // This endpoint will be used to process face detection results
-    // For now, we'll just echo back the data
     res.json({
         success: true,
         data: req.body
@@ -28,5 +26,7 @@ app.post('/api/detect', (req, res) => {
 
 // Start server
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+    console.log(`Server is running at: http://localhost:${PORT}`);
+    console.log(`You can access the application by opening this link in your browser:`);
+    console.log(`http://localhost:${PORT}`);
 }); 
